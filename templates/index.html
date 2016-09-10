@@ -40,7 +40,7 @@
             <p>{{ ex_tree.name }}: <span style="color: {% if ex_tree.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(ex_tree.balance) }}zł</span>
                 <ul>
                     {% for el in ex_tree.children %}
-                    <li>{{ el.name }}: <span style="color: {% if el.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(el..balance) }}zł</span>
+                    <li>{{ el.name }}: <span style="color: {% if el.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span>
                         <ul>
                             {% for em in el.children %}
                             <li>{{ em.name }}: <span style="color: {% if em.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(em.balance) }}zł</span></li>
