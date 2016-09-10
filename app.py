@@ -8,6 +8,7 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 
 
 @app.route('/')
