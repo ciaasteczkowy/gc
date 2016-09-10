@@ -30,25 +30,50 @@
             Outcome: <span style="color: red">{{ '%0.2f'|format(outcome) }} zł</span><br><br>
             Balance: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(balance) }}zł</span></p>
             <hr>
-            <p>{{ in_tree.name }}: <span style="color: {% if in_tree.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(in_tree.balance) }}zł</span>
-                <ul>
-                    {% for el in in_tree.children %}
-                    <li>{{ el.name }}: <span style="color: {% if el.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></li>
-                    {% endfor %}
-                </ul>
+            <p>{{ in_tree.name }}
+                <table class="pure-table">
+                    <thead>
+                        <tr>
+                            <th>Konto</th>
+                            <th>Wartość</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for el in in_tree.children %}
+                        <tr>
+                            <td>{{ el.name }}</td>
+                            <td><span style="color: {% if el.balance > 0 %}green{% elif el.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </p>
-            <p>{{ ex_tree.name }}: <span style="color: {% if ex_tree.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(ex_tree.balance) }}zł</span>
-                <ul>
-                    {% for el in ex_tree.children %}
-                    <li>{{ el.name }}: <span style="color: {% if el.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span>
-                        <ul>
-                            {% for em in el.children %}
-                            <li>{{ em.name }}: <span style="color: {% if em.balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(em.balance) }}zł</span></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                    {% endfor %}
-                </ul>
+            <p>{{ ex_tree.name }}
+                <table class="pure-table">
+                    <thead>
+                        <tr>
+                            <th>Konto</th>
+                            <th>Subkonto</th>
+                            <th>Wartość</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for el in ex_tree.children %}
+                        <tr>
+                            <td style="border-top: 1px solid #cbcbcb;"><strong>{{ el.name }}</strong></td>
+                            <td style="border-top: 1px solid #cbcbcb;"></td>
+                            <td style="border-top: 1px solid #cbcbcb;"><strong><span style="color: {% if el.balance > 0 %}green{% elif el.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></strong></td>
+                        </tr>
+                        {% for em in el.children %}
+                        <tr>
+                            <td></td>
+                            <td>{{ em.name }}</td>
+                            <td><span style="color: {% if em.balance > 0 %}green{% elif em.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(em.balance) }}zł</span></td>
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
             </p>
             </div>
         </div>

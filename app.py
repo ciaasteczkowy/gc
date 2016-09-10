@@ -49,7 +49,7 @@ def get_expense(book):
 
 def income_tree(account):
 	tree = {
-		'name': account.name,
+		'name': u'{}'.format(account.name),
 		'balance': account_balance(account),
 		'children': []
 	}
