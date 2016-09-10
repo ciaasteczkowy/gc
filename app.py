@@ -18,7 +18,7 @@ def hello():
 	income = get_income(book)
 	outcome = get_expense(book)
 
-	return render_template("index.html", income=income, outcome=outcome, balance=income-outcome)
+	return render_template("index.html", income=income, outcome=outcome, balance=income+outcome)
 
 
 def get_splits_sum(book, account_type):
