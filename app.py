@@ -47,7 +47,7 @@ def get_expense(book):
 
 def income_tree(account):
 	tree = {
-		'name': account.name.encode('utf-8'),
+		'name': account.name,
 		'balance': account_balance(account),
 		'children': []
 	}
