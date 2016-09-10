@@ -32,8 +32,13 @@
                 {% for acc in accounts %}
                 <li>{{ acc.name }}</li>
                 <ul>
-                    {% for ch in acc.children %}
-                    <li>{{ ch.name }}</li>
+                    {% for c1 in acc.children %}
+                    <li>{{ c1.name }}</li>
+                    <ul>
+                        {% for c2 in c1.children %}
+                        <li>{{ c2.name }}</li>
+                        {% endfor %}
+                    </ul>
                     {% endfor %}
                 </ul>
                 {% endfor %}
