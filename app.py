@@ -10,7 +10,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-	book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False)
+	try:
+		book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False)
+	except Exception as e:
+		return e.message
 
 	income = get_income(book)
 	outcome = get_expense(book)
