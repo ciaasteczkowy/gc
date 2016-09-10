@@ -20,27 +20,23 @@ def hello():
 
 	return render_template("index.html", income=income, outcome=outcome, balance=income-outcome)
 
-def get_splits_sum(account):
+
+def get_splits_sum(book, account_type):
 	_sum = 0
-	for split in account.splits:
-		_sum += split.value
+	for account in book.accounts:
+		if account.type == account_type and account.placeholder != 1:
+			for split in account.splits:
+				_sum += split.value
+
 	return _sum
 
-def get_income(book):
-	income = 0
-	for account in book.accounts:
-		if account.type == "INCOME" and account.placeholder != 1:
-			income -= get_splits_sum(account)
 
-	return income
+def get_income(book):
+	return get_splits_sum(book, "INCOME")
+	
 
 def get_expense(book):
-	expense = 0
-	for account in book.accounts:
-		if account.type == "EXPENSE" and account.placeholder != 1:
-			expense += get_splits_sum(account)
-
-	return expense
+	return get_splits_sum(book, "EXPENSE")
 
 
 # app.run(host="0.0.0.0", port=8000, debug=True)
