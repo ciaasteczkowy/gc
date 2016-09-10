@@ -30,20 +30,20 @@
             Outcome: <span style="color: red">{{ '%0.2f'|format(outcome) }} zł</span><br><br>
             Balance: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(balance) }}zł</span></p>
             <hr>
-            <p>({{ '%0.2f'|format(in_tree.balance) }}zł)
+            <p>{{ in_tree.name }} ({{ '%0.2f'|format(in_tree.balance) }}zł)
                 <ul>
                     {% for el in in_tree.children %}
-                    <li>({{ '%0.2f'|format(el.balance) }}zł)</li>
+                    <li>{{ el.name }} ({{ '%0.2f'|format(el.balance) }}zł)</li>
                     {% endfor %}
                 </ul>
             </p>
-            <p>({{ '%0.2f'|format(ex_tree.balance) }}zł)
+            <p>{{ ex_tree.name }} ({{ '%0.2f'|format(ex_tree.balance) }}zł)
                 <ul>
                     {% for el in ex_tree.children %}
-                    <li>({{ '%0.2f'|format(el.balance) }}zł)
+                    <li>{{ el.name }} ({{ '%0.2f'|format(el.balance) }}zł)
                         <ul>
                             {% for em in el.children %}
-                            <li>({{ '%0.2f'|format(em.balance) }}zł)</li>
+                            <li>{{ em.name }} ({{ '%0.2f'|format(em.balance) }}zł)</li>
                             {% endfor %}
                         </ul>
                     </li>

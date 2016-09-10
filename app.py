@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import piecash
 from flask import Flask, render_template
@@ -61,4 +62,4 @@ def income_tree(account):
 
 
 
-# app.run(host="0.0.0.0", port=8000, debug=True)
+app.run(host="0.0.0.0", port=8000, debug=True)
