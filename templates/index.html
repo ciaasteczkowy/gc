@@ -27,33 +27,9 @@
 
         <div id="main">
             <div class="content">
-
-            <ul>
-                {% for acc in accounts %}
-                <li>{{ acc.name }}</li>
-                <ul>
-                    {% for ch in acc.children %}
-                    <li>{{ ch.name }}</li>
-                    {% endfor %}
-                </ul>
-                {% endfor %}
-            </ul>
-
-                <table class="pure-table">
-                    <thead>
-                        <tr>
-                            <th>Konto</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                    {% for acc in accounts %}
-                        <tr>
-                            <td>{{ acc.name }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            Income: <span style="color: green">{{ income }}zł</span><br>
+            Outcome: <span style="color: red">{{ outcome }}zł</span><br><br>
+            Balance: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ balance }}zł</span>
             </div>
         </div>
     </div>
