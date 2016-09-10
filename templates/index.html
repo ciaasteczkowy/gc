@@ -29,6 +29,27 @@
             <p>Income: <span style="color: green">{{ income }}zł</span><br>
             Outcome: <span style="color: red">{{ outcome }}zł</span><br><br>
             Balance: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ balance }}zł</span></p>
+            <hr>
+            <p>{{ in_tree.name }} ({{ in_tree.balance }}zł)
+                <ul>
+                    {% for el in in_tree.children %}
+                    <li>{{ el.name }} ({{ el.balance }}zł)</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            <p>{{ ex_tree.name }} ({{ ex_tree.balance }}zł)
+                <ul>
+                    {% for el in ex_tree.children %}
+                    <li>{{ el.name }} ({{ el.balance }}zł)
+                        <ul>
+                            {% for em in el.children %}
+                            <li>{{ em.name }} ({{ em.balance }}zł)</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </p>
             </div>
         </div>
     </div>
