@@ -1,7 +1,3 @@
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
-
 import os
 import piecash
 from flask import Flask, render_template
@@ -51,7 +47,7 @@ def get_expense(book):
 
 def income_tree(account):
 	tree = {
-		'name': account.name,
+		'name': account.name.encode('utf-8'),
 		'balance': account_balance(account),
 		'children': []
 	}
