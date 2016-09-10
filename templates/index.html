@@ -27,6 +27,18 @@
 
         <div id="main">
             <div class="content">
+
+            <ul>
+                {% for acc in accounts %}
+                <li>{{ acc.name }}</li>
+                <ul>
+                    {% for ch in acc.children %}
+                    <li>{{ ch.name }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </ul>
+
                 <table class="pure-table">
                     <thead>
                         <tr>
