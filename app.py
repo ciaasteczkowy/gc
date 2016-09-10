@@ -26,7 +26,7 @@ def get_splits_sum(book, account_type):
 	for account in book.accounts:
 		if account.type == account_type and account.placeholder != 1:
 			for split in account.splits:
-				_sum += split.value
+				_sum -= split.value
 
 	return _sum
 
