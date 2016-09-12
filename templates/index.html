@@ -1,37 +1,43 @@
 {% extends "base.html" %}
 
 {% block container %}
-<div class="card">
-    <div class="card-block">
-        <h4 class="card-title">Bilans</h4>
-        <p class="card-text">Przychód: <span id="income">0.00</span> zł<br>
-            Wydatki: <span id="expense">0.00</span> zł</p>
-        <p class="card-text"><strong>Bilans: <span id="balance">0.00</span> zł</strong></p>
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Bilans</h4>
+                <p class="card-text">Przychód: <span id="income">0.00</span> zł<br>
+                    Wydatki: <span id="expense">0.00</span> zł</p>
+                <p class="card-text"><strong>Bilans: <span id="balance">0.00</span> zł</strong></p>
+            </div>
+        </div>
     </div>
-</div>
-<div class="card card-inverse card-primary">
-    <div class="card-block">
-        <h4 class="card-title">Dodaj nowy wpis</h4>
-        <p class="card-text ">
-        <form id="add_entry_form" action="{{ url_for('add_entry') }}" method="post">
-            <div class="form-group">
-                <label class="sr-only" for="expense_account">Kategoria</label>
-                <input name="expense_account" id="expense_account" class="form-control typeahead" type="text"
-                       data-provide="typeahead" placeholder="Kategoria" autocomplete="off" required>
+    <div class="col-xs-12 col-sm-6">
+        <div class="card card-inverse card-primary">
+            <div class="card-block">
+                <h4 class="card-title">Dodaj nowy wpis</h4>
+                <p class="card-text ">
+                <form id="add_entry_form" action="{{ url_for('add_entry') }}" method="post">
+                    <div class="form-group">
+                        <label class="sr-only" for="expense_account">Kategoria</label>
+                        <input name="expense_account" id="expense_account" class="form-control typeahead" type="text"
+                               data-provide="typeahead" placeholder="Kategoria" autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="expense_amount">Kwota</label>
+                        <div class="input-group">
+                            <input name="expense_amount" id="expense_amount" class="form-control" type="number" step="any"
+                                   placeholder="Kwota" autocomplete="off" required>
+                            <div class="input-group-addon">zł</div>
+                        </div>
+                    </div>
+                    <div class="text-xs-right">
+                        <button type="submit" class="btn btn-secondary">Dodaj</button>
+                    </div>
+                </form>
+                </p>
             </div>
-            <div class="form-group">
-                <label class="sr-only" for="expense_amount">Kwota</label>
-                <div class="input-group">
-                    <input name="expense_amount" id="expense_amount" class="form-control" type="number" step="any"
-                           placeholder="Kwota" autocomplete="off" required>
-                    <div class="input-group-addon">zł</div>
-                </div>
-            </div>
-            <div class="text-xs-right">
-                <button type="submit" class="btn btn-secondary">Dodaj</button>
-            </div>
-        </form>
-        </p>
+        </div>
     </div>
 </div>
 {% endblock %}

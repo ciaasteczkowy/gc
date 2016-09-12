@@ -6,12 +6,12 @@ import piecash
 import pymysql
 from flask import Flask, request, render_template
 from flask_basicauth import BasicAuth
-from piecash import Transaction, Split
+from piecash import Transaction, Split, factories
 
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
-app.config['DEBUG'] = bool(int(os.environ.get('DEBUG', 1)))
+app.config['DEBUG'] = False
 
 app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_USER')
 app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_PASS')
@@ -23,7 +23,6 @@ basic_auth = BasicAuth(app)
 @app.route('/')
 def hello():
     return render_template("index.html")
-
 
 def get_book():
     book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
@@ -37,6 +36,7 @@ def get_income_ajax():
     try:
         book = get_book()
     except Exception as e:
+        print(e)
         return json.dumps({'error': '{}'.format(e)}), 500
 
     income = get_income(book)
@@ -64,23 +64,25 @@ def add_entry():
     try:
         book = get_book()
     except Exception as e:
+        print(e)
         return json.dumps({'error': '{}'.format(e)})
 
     try:
-        c1 = book.default_currency
+        c1 = book.commodities[0]
 
         account = book.accounts(fullname=account)
         account_from = book.accounts(fullname="Aktywa:Aktywa bie??ce:ROR")
 
-        tr = Transaction(currency=c1, description='Transfer', splits=[
-            Split(account=account_from, value=0 - float(amount)),
-            Split(account=account, value=float(amount))
+        tr = Transaction(currency=c1, description='', splits=[
+            Split(account=account_from, value='-{}'.format(amount)),
+            Split(account=account, value=amount)
         ])
 
-        if not book.is_saved:
-            book.save()
+        book.save()
+        book.close()
 
     except Exception as e:
+        print(e)
         return json.dumps({'error': '{}'.format(e)}), 500
 
     return json.dumps({'status': 'success'})
