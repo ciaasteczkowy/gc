@@ -38,8 +38,8 @@ def get_income_ajax():
     except Exception as e:
         return json.dumps({'error': '{}'.format(e)})
 
-    income = 100  # get_income(book)
-    expense = -25  # get_expense(book)
+    income = get_income(book)
+    expense = get_expense(book)
     accounts = [{'id': a.guid, 'name': a.fullname, 'shortname': a.name} for a in book.accounts]
 
     ctx = {
