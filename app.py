@@ -3,9 +3,9 @@ import json
 
 import os
 import piecash
-from piecash import Transaction, Split, ledger
 import pymysql
 from flask import Flask, request, render_template
+from piecash import Transaction, Split
 
 pymysql.install_as_MySQLdb()
 
@@ -30,19 +30,20 @@ def hello():
 
     return render_template("index.html")
 
+
 def get_book():
-    try:
-        book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
-                                 open_if_lock=True)
-    except Exception as e:
-        return json.dumps({'error': '{}'.format(e)})
+    book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
+                             open_if_lock=True)
 
     return book
 
 
 @app.route('/data')
 def get_income_ajax():
-    book = get_book()
+    try:
+        book = get_book()
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)}), 500
 
     income = get_income(book)
     expense = get_expense(book)
@@ -64,11 +65,13 @@ def add_entry():
     amount = request.form.get('expense_amount')
 
     if not account or not amount:
-        json.dumps(response = {
-            'error': 'Buuuu!'
-        })
+        json.dumps({'error': 'Buuuu!'})
 
-    book = get_book()
+    try:
+        book = get_book()
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
     try:
         c1 = book.default_currency
 
@@ -83,7 +86,7 @@ def add_entry():
         book.flush()
 
     except Exception as e:
-        return json.dumps({'error': '{}'.format(e)})
+        return json.dumps({'error': '{}'.format(e)}), 500
 
     return json.dumps({'status': 'success'})
 

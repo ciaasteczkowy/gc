@@ -6,7 +6,7 @@ $( document ).ready(function() {
             from: "bottom",
             align: "center"
         },
-        delay: 1000,
+        delay: 2000,
         animate: {
             enter: 'animated fadeInDown',
             exit: 'animated fadeOutUp'
@@ -75,6 +75,7 @@ function loadData() {
         });
     }).fail(function(jqxhr, textStatus, error) {
         var error = jqxhr['responseJSON']['error'];
+        console.log(error);
         var notify = $.notify(
             { message: "<strong>Błąd: </strong>" + error },
             { type: 'danger' }
