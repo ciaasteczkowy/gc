@@ -1,77 +1,22 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Webcash</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Webcash</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    {% block css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        {% block css %}
+        {% endblock %}
+    </head>
+    <body>
+
+    {% block container %}
     {% endblock %}
-</head>
-<body>
-
-{% block container %}
-{% endblock %}
-    <div id="layout">
-
-        <div id="main">
-            <div class="content">
-            <p>Income: <span style="color: green">{{ '%0.2f'|format(income) }} zł</span><br>
-            Outcome: <span style="color: red">{{ '%0.2f'|format(outcome) }} zł</span><br><br>
-            Balance: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(balance) }}zł</span></p>
-            <hr>
-            <p>{{ in_tree.name }}
-                <table class="pure-table">
-                    <thead>
-                        <tr>
-                            <th>Konto</th>
-                            <th>Wartość</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for el in in_tree.children %}
-                        <tr>
-                            <td>{{ el.name }}</td>
-                            <td><span style="color: {% if el.balance > 0 %}green{% elif el.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </p>
-            <p>{{ ex_tree.name }}
-                <table class="pure-table">
-                    <thead>
-                        <tr>
-                            <th>Konto</th>
-                            <th>Subkonto</th>
-                            <th>Wartość</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for el in ex_tree.children %}
-                        <tr>
-                            <td style="border-top: 1px solid #cbcbcb;"><strong>{{ el.name }}</strong></td>
-                            <td style="border-top: 1px solid #cbcbcb;"></td>
-                            <td style="border-top: 1px solid #cbcbcb;"><strong><span style="color: {% if el.balance > 0 %}green{% elif el.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></strong></td>
-                        </tr>
-                        {% for em in el.children %}
-                        <tr>
-                            <td></td>
-                            <td>{{ em.name }}</td>
-                            <td><span style="color: {% if em.balance > 0 %}green{% elif em.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(em.balance) }}zł</span></td>
-                        </tr>
-                        {% endfor %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </p>
-            </div>
-        </div>
-    </div>
 
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-</body>
+    {% block js %}
+    {% endblock %}
+    </body>
 </html>
