@@ -38,8 +38,8 @@ def get_income_ajax():
     except Exception as e:
         return json.dumps({'error': '{}'.format(e)})
 
-    income = get_income(book)
-    expense = get_expense(book)
+    income = 100  # get_income(book)
+    expense = -25  # get_expense(book)
     accounts = [{'id': a.guid, 'name': a.fullname, 'shortname': a.name} for a in book.accounts]
 
     ctx = {
@@ -111,4 +111,4 @@ def income_tree(account):
     return tree
 
 
-app.run(host="0.0.0.0", port=8000, debug=True)
+# app.run(host="0.0.0.0", port=8000, debug=True)
