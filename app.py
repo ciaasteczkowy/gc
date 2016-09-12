@@ -11,7 +11,7 @@ from piecash import Transaction, Split
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
-app.config['DEBUG'] = bool(os.environ.get('DEBUG', True))
+app.config['DEBUG'] = bool(int(os.environ.get('DEBUG', 1)))
 
 app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_USER')
 app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_PASS')
