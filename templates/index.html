@@ -1,85 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    <title>Webcash</title>
-
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/side-menu.css') }}">
-</head>
-<body>
-    <div id="layout">
-        <!-- <a href="#menu" id="menuLink" class="menu-link">
-            <span></span>
-        </a>
-
-        <div id="menu">
-            <div class="pure-menu">
-                <ul class="pure-menu-list">
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Home</a></li>
-                </ul>
-            </div>
-        </div> -->
-
-        <div id="main">
-            <div class="content">
-            <p>Income: <span style="color: green">{{ '%0.2f'|format(income) }} zł</span><br>
-            Outcome: <span style="color: red">{{ '%0.2f'|format(outcome) }} zł</span><br><br>
-            Balance: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(balance) }}zł</span></p>
-            <hr>
-            <p>{{ in_tree.name }}
-                <table class="pure-table">
-                    <thead>
-                        <tr>
-                            <th>Konto</th>
-                            <th>Wartość</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for el in in_tree.children %}
-                        <tr>
-                            <td>{{ el.name }}</td>
-                            <td><span style="color: {% if el.balance > 0 %}green{% elif el.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </p>
-            <p>{{ ex_tree.name }}
-                <table class="pure-table">
-                    <thead>
-                        <tr>
-                            <th>Konto</th>
-                            <th>Subkonto</th>
-                            <th>Wartość</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for el in ex_tree.children %}
-                        <tr>
-                            <td style="border-top: 1px solid #cbcbcb;"><strong>{{ el.name }}</strong></td>
-                            <td style="border-top: 1px solid #cbcbcb;"></td>
-                            <td style="border-top: 1px solid #cbcbcb;"><strong><span style="color: {% if el.balance > 0 %}green{% elif el.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(el.balance) }}zł</span></strong></td>
-                        </tr>
-                        {% for em in el.children %}
-                        <tr>
-                            <td></td>
-                            <td>{{ em.name }}</td>
-                            <td><span style="color: {% if em.balance > 0 %}green{% elif em.balance < 0 %}red{% endif %}">{{ '%0.2f'|format(em.balance) }}zł</span></td>
-                        </tr>
-                        {% endfor %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </p>
-            </div>
+{% block container %}
+<div class="container" style="margin-top: 16px;">
+    <div class="card">
+        <div class="card-block">
+            <h4 class="card-title">Bilans</h4>
+            <p class="card-text">Przychód: <span style="color: green">{{ '%0.2f'|format(income) }} zł</span><br>
+                Wydatki: <span style="color: red">{{ '%0.2f'|format(outcome) }} zł</span></p>
+            <p class="card-text"><strong>Bilans: <span style="color: {% if balance > 0 %}green{%else%}red{% endif %}">{{ '%0.2f'|format(balance) }}zł</span></strong></p>
         </div>
     </div>
-
-    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
-
-</body>
-</html>
+</div>
+{% endblock %}
