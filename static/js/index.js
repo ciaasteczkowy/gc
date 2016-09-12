@@ -54,6 +54,16 @@ function loadData() {
             $('#balance').addClass('balance-negative');
         }
 
+        $.each(data['splits'], function(i, item) {
+            var $item = $('.split-item:first').clone();
+            $item.find('span.split-amount').text(item['amount']);
+            $item.find('span.split-account').text(item['account']);
+            $item.appendTo('.split-list');
+            console.log(item);
+        });
+
+        $('.split-item:first').remove();
+
         var accounts = data['accounts'];
 
         var $input = $('.typeahead');

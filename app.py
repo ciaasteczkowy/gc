@@ -42,12 +42,18 @@ def get_income_ajax():
     income = get_income(book)
     expense = get_expense(book)
     accounts = [{'id': a.guid, 'name': a.fullname, 'shortname': a.name} for a in book.accounts]
+    transactions = sorted(book.transactions, key=lambda x: x.post_date, reverse=True)[:6]
+    splits = [{
+        'amount': -float((t.splits[0] if t.splits[0].account.type == 'EXPENSE' else t.splits[1]).value),
+        'account': (t.splits[0] if t.splits[0].account.type == 'EXPENSE' else t.splits[1]).account.fullname
+        } for t in transactions]
 
     ctx = {
         'income': '{:.2f}'.format(income),
         'expense': '{:.2f}'.format(expense),
         'balance': '{:.2f}'.format(income + expense),
-        'accounts': accounts
+        'accounts': accounts,
+        'splits': splits
     }
 
     return json.dumps(ctx)
