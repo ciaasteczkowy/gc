@@ -5,29 +5,23 @@ import os
 import piecash
 import pymysql
 from flask import Flask, request, render_template
+from flask.ext.basicauth import BasicAuth
 from piecash import Transaction, Split
 
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
+app.config['DEBUG'] = bool(os.environ.get('DEBUG', True))
+
+app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_USER')
+app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_PASS')
+app.config['BASIC_AUTH_FORCE'] = not app.config['DEBUG']
+
+basic_auth = BasicAuth(app)
 
 
 @app.route('/')
 def hello():
-    # try:
-    #     book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
-    #                              open_if_lock=True)
-    # except Exception as e:
-    #     return '{}'.format(e)
-    #
-    # income = 100
-    # outcome = -23
-    # in_tree = income_tree(book.root_account.children(type="INCOME"))
-    # ex_tree = income_tree(book.root_account.children(type="EXPENSE"))
-    #
-    # accounts = [{'id': a.guid, 'name': a.fullname} for a in book.accounts]
-
     return render_template("index.html")
 
 
@@ -83,7 +77,8 @@ def add_entry():
             Split(account=account, value=float(amount))
         ])
 
-        book.flush()
+        if not book.is_saved:
+            book.save()
 
     except Exception as e:
         return json.dumps({'error': '{}'.format(e)}), 500
@@ -131,4 +126,6 @@ def income_tree(account):
 
     return tree
 
-# app.run(host="0.0.0.0", port=8000, debug=True)
+
+if app.config['DEBUG']:
+    app.run(host="0.0.0.0", port=8000, debug=True)
