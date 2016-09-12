@@ -19,12 +19,8 @@ $( document ).ready(function() {
                 response = JSON.parse(response);
                 if (response['status'] == 'success')
                     loadData();
-                else {
-                    var notify = $.notify(
-                        { message: response['message'] },
-                        { type: response['status'] }
-                    );
-                }
+                else
+                    var notify = $.notify(response['error']);
             },
             beforeSubmit: function(formData, jqForm, options) {
                 var queryString = $.param(formData);

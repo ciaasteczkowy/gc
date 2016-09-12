@@ -3,6 +3,7 @@ import json
 
 import os
 import piecash
+from piecash import Transaction, Split, ledger
 import pymysql
 from flask import Flask, request, render_template
 
@@ -29,14 +30,19 @@ def hello():
 
     return render_template("index.html")
 
-
-@app.route('/data')
-def get_income_ajax():
+def get_book():
     try:
         book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
                                  open_if_lock=True)
     except Exception as e:
         return json.dumps({'error': '{}'.format(e)})
+
+    return book
+
+
+@app.route('/data')
+def get_income_ajax():
+    book = get_book()
 
     income = get_income(book)
     expense = get_expense(book)
@@ -57,17 +63,29 @@ def add_entry():
     account = request.form.get('expense_account')
     amount = request.form.get('expense_amount')
 
-    if account and amount:
-        response = {
-            'status': 'success',
-        }
-    else:
-        response = {
-            'status': 'danger',
-            'message': 'Buuuu!'
-        }
+    if not account or not amount:
+        json.dumps(response = {
+            'error': 'Buuuu!'
+        })
 
-    return json.dumps(response)
+    book = get_book()
+    try:
+        c1 = book.default_currency
+
+        account = book.accounts(fullname=account)
+        account_from = book.accounts(fullname="Aktywa:Aktywa bie??ce:ROR")
+
+        tr = Transaction(currency=c1, description='Transfer', splits=[
+            Split(account=account_from, value=0 - float(amount)),
+            Split(account=account, value=float(amount))
+        ])
+
+        book.flush()
+
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
+    return json.dumps({'status': 'success'})
 
 
 def get_splits_sum(book, account_type):
