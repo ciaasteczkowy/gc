@@ -1,0 +1,11 @@
+body {
+    padding-top: 16px;
+}
+
+.balance-positive {
+    color: green;
+}
+
+.balance-negative {
+    color: red;
+}

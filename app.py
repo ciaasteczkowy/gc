@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 import os
 import piecash
 import pymysql
@@ -12,19 +14,52 @@ app.config['DEBUG'] = True
 
 @app.route('/')
 def hello():
+    # try:
+    #     book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
+    #                              open_if_lock=True)
+    # except Exception as e:
+    #     return '{}'.format(e)
+    #
+    # income = 100
+    # outcome = -23
+    # in_tree = income_tree(book.root_account.children(type="INCOME"))
+    # ex_tree = income_tree(book.root_account.children(type="EXPENSE"))
+    #
+    # accounts = [{'id': a.guid, 'name': a.fullname} for a in book.accounts]
+
+    return render_template("index.html")
+
+
+@app.route('/data')
+def get_income_ajax():
     try:
         book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
                                  open_if_lock=True)
     except Exception as e:
         return '{}'.format(e)
 
-    income = get_income(book)
-    outcome = get_expense(book)
-    in_tree = income_tree(book.root_account.children(type="INCOME"))
-    ex_tree = income_tree(book.root_account.children(type="EXPENSE"))
+    income = 100 #get_income(book)
+    expense = -25 # get_expense(book)
 
-    return render_template("index.html", income=income, outcome=outcome, balance=income + outcome,
-                           in_tree=in_tree, ex_tree=ex_tree)
+    ctx = {
+        'income': '{:.2f}'.format(income),
+        'expense': '{:.2f}'.format(expense),
+        'balance': '{:.2f}'.format(income + expense)
+    }
+
+    return json.dumps(ctx)
+
+@app.route('/accounts')
+def get_accounts_list():
+    try:
+        book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
+                                 open_if_lock=True)
+    except Exception as e:
+        return '{}'.format(e)
+
+    accounts = [{'id': a.guid, 'name': a.fullname} for a in book.accounts]
+
+    return json.dumps(accounts)
 
 
 def get_splits_sum(book, account_type):
@@ -46,11 +81,11 @@ def account_balance(account):
 
 
 def get_income(book):
-    return get_splits_sum(book, "INCOME")
+    return float(get_splits_sum(book, "INCOME"))
 
 
 def get_expense(book):
-    return get_splits_sum(book, "EXPENSE")
+    return float(get_splits_sum(book, "EXPENSE"))
 
 
 def income_tree(account):
@@ -66,6 +101,5 @@ def income_tree(account):
         tree['balance'] += child['balance']
 
     return tree
-
 
 # app.run(host="0.0.0.0", port=8000, debug=True)
