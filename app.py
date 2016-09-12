@@ -5,7 +5,7 @@ import os
 import piecash
 import pymysql
 from flask import Flask, request, render_template
-from flask.ext.basicauth import BasicAuth
+from flask_basicauth import BasicAuth
 from piecash import Transaction, Split
 
 pymysql.install_as_MySQLdb()
