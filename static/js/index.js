@@ -54,15 +54,15 @@ function loadData() {
             $('#balance').addClass('balance-negative');
         }
 
-        $.each(data['splits'], function(i, item) {
-            var $item = $('.split-item:first').clone();
-            $item.find('span.split-amount').text(item['amount']);
-            $item.find('span.split-account').text(item['account']);
-            $item.appendTo('.split-list');
-            console.log(item);
-        });
+        var $item = $('.split-item:first').clone();
+        $('.split-item').remove()
 
-        $('.split-item:first').remove();
+        $.each(data['splits'], function(i, item) {
+            $el = $item.clone();
+            $el.find('span.split-amount').text(item['amount']);
+            $el.find('span.split-account').text(item['account']);
+            $el.appendTo('.split-list');
+        });
 
         var accounts = data['accounts'];
 
