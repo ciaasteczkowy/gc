@@ -43,6 +43,7 @@ def get_income_ajax():
     expense = get_expense(book)
     accounts = [{'id': a.guid, 'name': a.fullname, 'shortname': a.name} for a in book.accounts]
     transactions = sorted(book.transactions, key=lambda x: x.post_date, reverse=True)[:6]
+    print(transactions)
     splits = [{
         'amount': -float((t.splits[0] if t.splits[0].account.type == 'EXPENSE' else t.splits[1]).value),
         'account': (t.splits[0] if t.splits[0].account.type == 'EXPENSE' else t.splits[1]).account.fullname
