@@ -4,7 +4,7 @@ import json
 import os
 import piecash
 import pymysql
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 
 pymysql.install_as_MySQLdb()
 
@@ -36,30 +36,38 @@ def get_income_ajax():
         book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
                                  open_if_lock=True)
     except Exception as e:
-        return '{}'.format(e)
+        return json.dumps({'error': '{}'.format(e)})
 
     income = get_income(book)
     expense = get_expense(book)
+    accounts = [{'id': a.guid, 'name': a.fullname, 'shortname': a.name} for a in book.accounts]
 
     ctx = {
         'income': '{:.2f}'.format(income),
         'expense': '{:.2f}'.format(expense),
-        'balance': '{:.2f}'.format(income + expense)
+        'balance': '{:.2f}'.format(income + expense),
+        'accounts': accounts
     }
 
     return json.dumps(ctx)
 
-@app.route('/accounts')
-def get_accounts_list():
-    try:
-        book = piecash.open_book(uri_conn=os.environ['JAWSDB_URL'], readonly=False, do_backup=False,
-                                 open_if_lock=True)
-    except Exception as e:
-        return '{}'.format(e)
 
-    accounts = [{'id': a.guid, 'name': a.fullname} for a in book.accounts]
+@app.route('/add_entry', methods=("POST",))
+def add_entry():
+    account = request.form.get('expense_account')
+    amount = request.form.get('expense_amount')
 
-    return json.dumps(accounts)
+    if account and amount:
+        response = {
+            'status': 'success',
+        }
+    else:
+        response = {
+            'status': 'danger',
+            'message': 'Buuuu!'
+        }
+
+    return json.dumps(response)
 
 
 def get_splits_sum(book, account_type):
@@ -102,4 +110,5 @@ def income_tree(account):
 
     return tree
 
-# app.run(host="0.0.0.0", port=8000, debug=True)
+
+app.run(host="0.0.0.0", port=8000, debug=True)

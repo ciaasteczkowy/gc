@@ -1,4 +1,41 @@
 $( document ).ready(function() {
+    loadData();
+
+    $.notifyDefaults({
+        placement: {
+            from: "bottom",
+            align: "center"
+        },
+        delay: 1000,
+        animate: {
+            enter: 'animated fadeInDown',
+            exit: 'animated fadeOutUp'
+        }
+    });
+
+    $("#add_entry_form").ajaxForm(
+        {
+            success: function(response, status, xhr, $form) {
+                response = JSON.parse(response);
+                if (response['status'] == 'success')
+                    loadData();
+                else {
+                    var notify = $.notify(
+                        { message: response['message'] },
+                        { type: response['status'] }
+                    );
+                }
+            },
+            beforeSubmit: function(formData, jqForm, options) {
+                var queryString = $.param(formData);
+                console.log(formData);
+                console.log(queryString);
+            }
+        }
+    );
+});
+
+function loadData() {
     $.getJSON( "/data", function( data ) {
         $('#income').text(data['income']);
         if (data['income'] > 0) {
@@ -20,11 +57,8 @@ $( document ).ready(function() {
         } else {
             $('#balance').addClass('balance-negative');
         }
-    });
 
-    $.getJSON( "/accounts", function( data ) {
-        var accounts = data;
-        console.log(accounts);
+        var accounts = data['accounts'];
 
         var $input = $('.typeahead');
         $input.typeahead({source: accounts,
@@ -32,7 +66,7 @@ $( document ).ready(function() {
         $input.change(function() {
             var current = $input.typeahead("getActive");
             if (current) {
-                // Some item from your model is active!
+//                $input.val(current.shortname);
                 if (current.name == $input.val()) {
                     // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
                 } else {
@@ -43,5 +77,11 @@ $( document ).ready(function() {
                 // Nothing is active so it is a new value (or maybe empty value)
             }
         });
+    }).fail(function(jqxhr, textStatus, error) {
+        var error = jqxhr['responseJSON']['error'];
+        var notify = $.notify(
+            { message: "<strong>Błąd: </strong>" + error },
+            { type: 'danger' }
+        );
     });
-});
+}

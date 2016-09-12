@@ -4,24 +4,24 @@
 <div class="card">
     <div class="card-block">
         <h4 class="card-title">Bilans</h4>
-        <p class="card-text">Przychód: <span id="income">0</span> zł<br>
-            Wydatki: <span id="expense">0</span> zł</p>
-        <p class="card-text"><strong>Bilans: <span id="balance">0</span> zł</strong></p>
+        <p class="card-text">Przychód: <span id="income">0.00</span> zł<br>
+            Wydatki: <span id="expense">0.00</span> zł</p>
+        <p class="card-text"><strong>Bilans: <span id="balance">0.00</span> zł</strong></p>
     </div>
 </div>
 <div class="card">
     <div class="card-block">
-        <h4 class="card-title">Dodaj nowy</h4>
+        <h4 class="card-title">Dodaj nowy wpis</h4>
         <p class="card-text">
-            <form>
+            <form id="add_entry_form" action="{{ url_for('add_entry') }}" method="post">
                 <div class="form-group">
-                    <label class="sr-only" for="expenseAccount">Kategoria</label>
-                    <input id="expenseAccount" class="form-control typeahead" type="text" data-provide="typeahead" placeholder="Kategoria" autocomplete="off">
+                    <label class="sr-only" for="expense_account">Kategoria</label>
+                    <input name="expense_account" id="expense_account" class="form-control typeahead" type="text" data-provide="typeahead" placeholder="Kategoria" autocomplete="off" required>
                 </div>
                 <div class="form-group">
-                    <label class="sr-only" for="expenseAmount">Kwota</label>
+                    <label class="sr-only" for="expense_amount">Kwota</label>
                     <div class="input-group">
-                        <input id="expenseAmount" class="form-control" type="text" placeholder="Kwota" autocomplete="off">
+                        <input name="expense_amount" id="expense_amount" class="form-control" type="number" step="any" placeholder="Kwota" autocomplete="off" required>
                         <div class="input-group-addon">zł</div>
                     </div>
                 </div>
@@ -34,5 +34,6 @@
 
 {% block js %}
 <script src="{{ url_for('static', filename='js/bootstrap3-typeahead.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.form.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
