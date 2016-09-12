@@ -38,8 +38,8 @@ def get_income_ajax():
     except Exception as e:
         return '{}'.format(e)
 
-    income = 100 #get_income(book)
-    expense = -25 # get_expense(book)
+    income = get_income(book)
+    expense = get_expense(book)
 
     ctx = {
         'income': '{:.2f}'.format(income),
